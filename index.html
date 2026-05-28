@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoC Avvera - Home (DEBUG MODE)</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f0f2f5; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .container { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; max-width: 400px; }
+        input, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 6px; box-sizing: border-box; }
+        button { background-color: #005fb2; color: white; border: none; font-weight: bold; cursor: pointer; }
+        .console-box { margin-top: 20px; font-family: monospace; font-size: 11px; color: #333; text-align: left; background: #eef; padding: 10px; width: 100%; box-sizing: border-box; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <span style="background: #eee; padding: 4px 10px; border-radius: 10px; font-size: 12px;">AREA PUBBLICA (Anonima)</span>
+        <h1>Accedi alla Demo</h1>
+        
+        <input type="text" id="cf" placeholder="Inserisci Codice Fiscale">
+        <input type="password" placeholder="Password (qualsiasi)">
+        <button id="loginBtn" onclick="login()">Accedi e Forza Nuova Chat</button>
+
+        <div class="console-box" id="ui-logs">Aperti i DevTools (F12) per i log completi.</div>
+    </div>
+
+    <script>
+        function logMsg(msg) {
+            console.log(msg);
+            document.getElementById('ui-logs').innerHTML += `<br>> ${msg}`;
+        }
+
+        // LA STRATEGIA NUCLEARE (API + Cookie + Storage)
+        async function nuclearWipe() {
+            logMsg("[DEBUG-WIPE] 1. Inizio pulizia totale...");
+            
+            if (window.embeddedservice_bootstrap && embeddedservice_bootstrap.utilAPI) {
+                try {
+                    logMsg("[DEBUG-WIPE] Richiamo API utilAPI.clearSession()...");
+                    embeddedservice_bootstrap.utilAPI.clearSession();
+                } catch(e) {
+                    console.warn("[DEBUG-WIPE] Errore clearSession:", e);
+                }
+            }
+
+            logMsg("[DEBUG-WIPE] 2. Distruzione Cookie Locali");
+            document.cookie.split(";").forEach(function(c) { 
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+            });
+
+            logMsg("[DEBUG-WIPE] 3. Svuoto Local & Session Storage");
+            localStorage.clear();
+            sessionStorage.clear();
+
+            logMsg("[DEBUG-WIPE] 4. Svuoto IndexedDB");
+            if (window.indexedDB && window.indexedDB.databases) {
+                try {
+                    const dbs = await window.indexedDB.databases();
+                    for (let db of dbs) {
+                        window.indexedDB.deleteDatabase(db.name);
+                        console.log("[DEBUG-WIPE] DB Eliminato:", db.name);
+                    }
+                } catch(e) {}
+            }
+            logMsg("[DEBUG-WIPE] Pulizia completata.");
+        }
+
+        async function login() {
+            const cf = document.getElementById('cf').value;
+            if (!cf) return alert('Inserisci il CF');
+
+            document.getElementById('loginBtn').innerText = "Distruzione vecchia chat...";
+            
+            // Aspettiamo che il reset nucleare finisca
+            await nuclearWipe();
+
+            // Salviamo SOLO il CF per la pagina dopo
+            localStorage.setItem('session_cf', cf);
+            
+            logMsg("[DEBUG-WIPE] Redirect all'Area Riservata tra 1s...");
+            setTimeout(() => { window.location.href = 'area-riservata.html'; }, 1000);
+        }
+
+        // --- SETUP AGENTFORCE CON LISTENERS ---
+        function initEmbeddedMessaging() {
+            try {
+                logMsg("[AGENTFORCE] Avvio Init (Pubblico)...");
+                embeddedservice_bootstrap.settings.language = 'it'; 
+
+                // Event Listeners per capire cosa fa Salesforce
+                const events = ["onEmbeddedMessagingReady", "onEmbeddedMessagingSessionCreated", "onEmbeddedMessagingConversationOpened"];
+                events.forEach(evt => {
+                    window.addEventListener(evt, (e) => console.log(`[EVENTO SF] ${evt}`, e ? e.detail : ''));
+                });
+
+                embeddedservice_bootstrap.init(
+                    '00DMA000004YOm0',
+                    'Avvera',
+                    'https://ssg-ai--avveraai.sandbox.my.site.com/ESWAvvera1778503178330',
+                    { scrt2URL: 'https://ssg-ai--avveraai.sandbox.my.salesforce-scrt.com' }
+                );
+            } catch (err) {
+                console.error('Error loading Embedded Messaging: ', err);
+            }
+        };
+    </script>
+    <script type='text/javascript' src='https://ssg-ai--avveraai.sandbox.my.site.com/ESWAvvera1778503178330/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
+</body>
+</html>
