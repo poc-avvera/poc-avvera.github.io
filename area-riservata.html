@@ -7,8 +7,7 @@
     <style>
         body { font-family: sans-serif; background-color: #fce4f3; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
         .container { background: white; padding: 40px; border-radius: 12px; border: 2px solid #E91E8C; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center; max-width: 500px; }
-        button { background-color: #f44336;; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 20px;}
-        .console-box { margin-top: 20px; font-family: monospace; font-size: 11px; color: #fff; background: #222; padding: 10px; text-align: left; border-radius: 4px; }
+        button { background-color: #f44336; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 20px;}
     </style>
 </head>
 <body>
@@ -19,14 +18,13 @@
         
         <p>CF Recuperato: <strong id="cfDisplay">...</strong></p>
         
-        <button id="logoutBtn" onclick="logout()">Esegui Logout </button>
+        <button id="logoutBtn" onclick="logout()">Esegui Logout</button>
 
     </div>
 
     <script>
         function logMsg(msg) {
-            console.log(msg);
-            document.getElementById('ui-logs').innerHTML += `<br>> ${msg}`;
+            console.log(msg); // Log visibili solo in console
         }
 
         const userCF = localStorage.getItem('session_cf');
