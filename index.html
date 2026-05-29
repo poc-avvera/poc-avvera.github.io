@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PoC Avvera - Home (DEBUG MODE)</title>
+    <title>PoC Avvera - Home</title>
     <style>
         body { font-family: sans-serif; background-color: #f0f2f5; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
         .container { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; max-width: 400px; }
         input, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 6px; box-sizing: border-box; }
         button { background-color: #E91E8C; color: white; border: none; font-weight: bold; cursor: pointer; }
-        .console-box { margin-top: 20px; font-family: monospace; font-size: 11px; color: #333; text-align: left; background: #eef; padding: 10px; width: 100%; box-sizing: border-box; border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -21,13 +20,11 @@
         <input type="text" id="cf" placeholder="Inserisci Codice Fiscale">
         <input type="password" placeholder="Password">
         <button id="loginBtn" onclick="login()">Accedi</button>
-
     </div>
 
     <script>
         function logMsg(msg) {
-            console.log(msg);
-            document.getElementById('ui-logs').innerHTML += `<br>> ${msg}`;
+            console.log(msg); // Log visibili solo in console
         }
 
         // LA STRATEGIA NUCLEARE (API + Cookie + Storage)
@@ -69,7 +66,7 @@
             const cf = document.getElementById('cf').value;
             if (!cf) return alert('Inserisci il CF');
 
-            document.getElementById('loginBtn').innerText = "Accesso in corso...";
+            document.getElementById('loginBtn').innerText = "Distruzione vecchia chat...";
             
             // Aspettiamo che il reset nucleare finisca
             await nuclearWipe();
